@@ -1,6 +1,8 @@
 //jshint esversion:6
 require('dotenv').config()
 const express = require("express");
+const path = require("path");
+
 const serverless = require("serverless-http");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -24,6 +26,9 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(express.static(path.join(__dirname, "client", "build")));
+
 app.use(session({
   secret: process.env.CLIENT_SECRET,
   resave: false,
@@ -215,8 +220,6 @@ app.post("/login", function (req, res) {
     }
   })
 });
-
-
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server started on port 3000");
