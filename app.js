@@ -30,7 +30,7 @@ app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use(session({
-  secret: process.env.CLIENT_SECRET,
+  secret: process.env.GOOGLE_CLIENT_SECRET,
   resave: false,
   saveUninitialized: false
 }));
@@ -39,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-var uri = process.env.MONGO_URL;
+var uri = process.env.DB_PATH;
 const options = {
   useNewUrlParser: true,
   };
@@ -69,8 +69,8 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new GoogleStrategy({
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: "http://localhost:3000/auth/google/success",
   userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
