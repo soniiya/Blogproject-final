@@ -24,10 +24,10 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// app.use(express.json());
+// app.use(express.urlencoded({extended: true}));
 
 app.use(express.static("public"));
 
@@ -75,7 +75,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/google/success",
+  callbackURL: "https://bloginghostingonheroku.herokuapp.com/auth/google/success",
   userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
 function(accessToken, refreshToken, profile, cb) {
@@ -153,18 +153,18 @@ app.post("/compose", function (req, res) {
   });
 });
 
-app.get("/posts/:postId", function (req, res) {
+app.get("/posts/:postId", function(req, res){
 
   const requestedPostId = req.params.postId;
-
-  Post.findOne({ _id: requestedPostId }, function (err, post) {
-    res.render("post", {
-      title: post.title,
-      content: post.content,
-      img: post.photo
+  
+    Post.findOne({_id: requestedPostId}, function(err, post){
+      res.render("post", {
+        title: post.title,
+        content: post.content
+      });
     });
   });
-});
+
 
 app.get("/about", function (req, res) {
   res.render("about", { aboutContent: aboutContent });
