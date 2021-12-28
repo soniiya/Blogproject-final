@@ -3,12 +3,9 @@ require('dotenv').config()
 const express = require("express");
 const path = require("path");
 
-const serverless = require("serverless-http");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
-var MongoClient = require('mongodb').MongoClient;
-const multer = require('multer');
 const passport = require("passport");
 const session = require("express-session");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -49,14 +46,12 @@ const options = {
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
-
-  };
+};
  mongoose.connect(uri, options);
 
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
-  googleID:String
 });
 
 userSchema.plugin(passportLocalMongoose);
