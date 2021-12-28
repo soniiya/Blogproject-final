@@ -47,7 +47,7 @@ var uri = process.env.DB_PATH;
 const options = {
   useNewUrlParser: true,
   };
- mongoose.connect(uri, options);
+ mongoose.connect("uri", options);
 
 const userSchema = new mongoose.Schema({
   email: String,
