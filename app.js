@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname , "public")));
 
 app.use(session({
   secret: "success",
@@ -46,8 +46,12 @@ app.use(passport.session());
 var uri = process.env.DB_PATH;
 const options = {
   useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+
   };
- mongoose.connect("uri", options);
+ mongoose.connect(uri, options);
 
 const userSchema = new mongoose.Schema({
   email: String,
