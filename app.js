@@ -34,7 +34,7 @@ app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use(session({
-  secret: process.env.GOOGLE_CLIENT_SECRET,
+  secret: "success",
   resave: false,
   saveUninitialized: false
 }));
@@ -72,19 +72,6 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "https://bloginghostingonheroku.herokuapp.com/auth/google/success",
-  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-},
-function(accessToken, refreshToken, profile, cb) {
-  User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    return cb(err, user);
-  });
-}
-));
-
 const postSchema = {
   title: String,
   content: String,
@@ -103,16 +90,7 @@ app.get("/", function (req, res) {
   });
 });
 
-app.get("/auth/google",
-   passport.authenticate("google", {scope: ["profile"]}) 
-);
 
-app.get('/auth/google/success', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect("/success");
-  });
 
 app.get("/profile", function (req, res) {
 
@@ -200,7 +178,7 @@ app.post("/register", function (req, res) {
     req.body.password, function (err, user) {
       if (err) {
         console.log(err);
-        res.redirect("/");
+        res.redirect("/register");
       } else {
         passport.authenticate("local")(req, res, function () {
           res.redirect("/success");
